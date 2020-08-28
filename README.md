@@ -13,7 +13,7 @@ ViR is composed of four scripts, which work in two modules. The first three scri
 ## Installation
 
 ### Dependencies
-ViR uses the following programs, which need to be installed and their path reported as values of the input parameters of the scripts.
+ViR was evaluated in Ubuntu 16.04 LTS Linux environment and uses the following programs which need to be installed and their path reported as values of the input parameters of the scripts.
 
 * PYTHON 2.7 https://www.python.org/download/releases/2.7/
 * BEDTOOLS v2.25.0 https://github.com/arq5x/bedtools2/releases
