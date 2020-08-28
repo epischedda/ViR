@@ -43,7 +43,12 @@ Needed:
 SSR4	E00338:95:HGNWJCCXY:1:1221:16640:64984	NW_021838865.1	556999	0	GTCATTGCCGCCATCATCAACGGCATTGAGTGGATCCGTGGCATGGGTGAGTGCCGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCTTTTTAAACATAGGGGGGTAATCTTCCCCCACGAACCCCCAAAAGAAAGGTTTGGTTGTGTCGGG	NC_043569.1	826	863	TTTTTTTTTTTTTTTTTTTTTTTTTTTTCTTTTTAAA
 ```
 
-3. __Host reference genome (FASTA)__ in fasta format. The path of the fasta file must be used as value of the parameter `-reference_fasta` in ```"ViR_RefineCandidates.sh"``` script. To use the example files please download the [latest version of Aedes albopictus reference genome](https://www.ncbi.nlm.nih.gov/assembly/GCF_006496715.1 "AalbF2"). The BLAST database of the fasta file is needed; you can produce it with the following command:
+3. __Host reference genome (FASTA)__ in fasta format. The path of the fasta file must be used as value of the parameter `-reference_fasta` in ```"ViR_RefineCandidates.sh"``` script. To use the example files please download the [latest version of Aedes albopictus reference genome](https://www.ncbi.nlm.nih.gov/assembly/GCF_006496715.1 "AalbF2") and run the following command to replace the default scaffold names:
+```sh
+cat GCF_006496715.1_Aalbo_primary.1_genomic.fna | awk -F '\\ Aedes' '{print $1}' >  GCF_006496715.1_Aalbo_primary.1_genomic _clean.fasta
+```
+
+The BLAST database of the fasta file is needed; you can produce it with the following command:
 ```sh
 /absolute_path_to/ncbi-blast-XXX+/bin/makeblastdb -in /absolute_path_to/Host_Reference_Genome.fasta -dbtype nucl
 ```
