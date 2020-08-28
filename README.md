@@ -43,7 +43,7 @@ Needed:
 SSR4	E00338:95:HGNWJCCXY:1:1221:16640:64984	NW_021838865.1	556999	0	GTCATTGCCGCCATCATCAACGGCATTGAGTGGATCCGTGGCATGGGTGAGTGCCGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTCTTTTTAAACATAGGGGGGTAATCTTCCCCCACGAACCCCCAAAAGAAAGGTTTGGTTGTGTCGGG	NC_043569.1	826	863	TTTTTTTTTTTTTTTTTTTTTTTTTTTTCTTTTTAAA
 ```
 
-3. __Host reference genome (FASTA)__ in fasta format. The path of the fasta file must be used as value of the parameter `-reference_fasta` in ```"ViR_RefineCandidates.sh"``` script. The BLAST database of the fasta file is needed; you can produce it with the following command:
+3. __Host reference genome (FASTA)__ in fasta format. The path of the fasta file must be used as value of the parameter `-reference_fasta` in ```"ViR_RefineCandidates.sh"``` script. To use the example files please download the [latest version of Aedes albopictus reference genome](https://www.ncbi.nlm.nih.gov/assembly/GCF_006496715.1 "AalbF2"). The BLAST database of the fasta file is needed; you can produce it with the following command:
 ```sh
 /absolute_path_to/ncbi-blast-XXX+/bin/makeblastdb -in /absolute_path_to/Host_Reference_Genome.fasta -dbtype nucl
 ```
@@ -93,7 +93,7 @@ nohup bash /absolute_path_to/VIR-master/ViR_RefineCandidates.sh \
 
 ### Output
 
-```"ViR_RefineCandidates.sh"``` outputs three files: ```"Final_ChimericPairs_Info.txt"```, ```"Final_HostReads.fasta"``` and ```"Final_ViralReads.fasta"```
+```"ViR_RefineCandidates.sh"``` outputs three files: ```"Final_ChimericPairs_Info.txt"```, ```"Final_HostReads.fasta"``` and ```"Final_ViralReads.fasta"```. Example output files are in the 'RC_OutputFiles' directory.
 
 1. The ```"Final_ChimericPairs_Info.txt"``` is a tab delimited file including the following columns for the chimeric reads passing the filters;
 ```
@@ -121,7 +121,7 @@ The followings are needed:
 
 2. __The list of the samples (TXT)__ to analyze together. The path of the text file must be used as value of the parameter `-sample_list` in ```"ViR_SolveDispersion.sh"``` script. A single or multiple samples can be used at the same time. Example: 'SD_sample_list.txt';
 
-3. __Host reference genome (FASTA)__ in fasta format. The path of the fasta file must be used as value of the parameter `-reference_fasta` in ```"ViR_SolveDispersion.sh"``` script;
+3. __Host reference genome (FASTA)__ in fasta format. The path of the fasta file must be used as value of the parameter `-reference_fasta` in ```"ViR_SolveDispersion.sh"``` script. The same reference genome used for ViR_RefineCandidates;
 
 4. OPTIONAL __Transposable elements (FASTA)__ in fasta format. The path of the fasta file must be used as value of the parameter `-repreg_fasta` in ```"ViR_SolveDispersion.sh"``` script. If `-repreg_fasta` is used, also set the `-min_TE_al_length` parameter. The BLAST database of the fasta file is needed; you can produce it with the following command:
 ```sh
@@ -193,7 +193,7 @@ nohup bash /absolute_path_to/VIR-master/ViR_SolveDispersion.sh \
 
 ### Output
 
-```"ViR_SolveDispersion.sh"``` outputs five files ( ```"All_Equivalent_Regions_per_Read_Group.txt"```, ```"Complete_Dataset_Info.txt"```, ```"Complete_Read_Groups_Info.txt"```, ```"Equivalent_region_per_Read_Group.fasta"``` and ```"Equivalent_region_per_Read_Group_sorted.bed"```) and a directory named 'RG':
+```"ViR_SolveDispersion.sh"``` outputs five files ( ```"All_Equivalent_Regions_per_Read_Group.txt"```, ```"Complete_Dataset_Info.txt"```, ```"Complete_Read_Groups_Info.txt"```, ```"Equivalent_region_per_Read_Group.fasta"``` and ```"Equivalent_region_per_Read_Group_sorted.bed"```) and a directory named 'RG'. Example output files are in the 'SD_OutputFiles' directory.
 
 1. The ```"All_Equivalent_Regions_per_Read_Group.txt"``` includes for each read groups found in the sample, the list of the read ids in the group and all the equivalent regions in the genome in which the reads have an alignements. Usually, equivalent regions are repetivive elements in the genome;
 
