@@ -29,7 +29,7 @@ def read_file_blast(txt):
                 list_reads.append(query_acc_ver)
             
             if str(query_acc_ver) != str(line_name):
-                new_query_acc_ver = query_acc_ver+'_'+str(n)
+                new_query_acc_ver = query_acc_ver+'_bh_'+str(n)
                 n = n+1
                 line_name = new_query_acc_ver
                 

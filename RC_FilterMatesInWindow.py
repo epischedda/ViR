@@ -12,8 +12,8 @@ def read_mates_in_window(mates_file):
         line=line.rstrip()
         row=line.split('\t')
         
-        host=row[3].split('_')[0]
-        viral=row[9].split('_')[0]
+        host=row[3].split('_bh_')[0]
+        viral=row[9].split('_bh_')[0]
 
         if str(host)==str(viral):
             ToRemoveReads.append(host)

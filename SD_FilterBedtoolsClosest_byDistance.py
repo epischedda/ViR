@@ -40,7 +40,7 @@ def read_file_merge(txt):
         hit_istance.seq_distance=parts[8]
         
         for read in r_list:
-            name=read.split('_')[0]
+            name=read.split('_bh_')[0]
             reads_list.append(name)
         
         real_list = set(sorted(reads_list))
