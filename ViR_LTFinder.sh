@@ -125,7 +125,7 @@ fi
 # Sorting resulting bam file and indexing for IGV visualization
 #----------------------------------------------------------------------------------------------------------------------------
 samtools sort -@ $TH -o $WORKDIR/${SAMPLE}_to_${virus_name}_sortedIGV.bam $WORKDIR/${SAMPLE}_to_${virus_name}_allLanes.bam
-samtools index -@ $TH $WORKDIR/${SAMPLE}_to_${virus_name}_sortedIGV.bam
+samtools index $WORKDIR/${SAMPLE}_to_${virus_name}_sortedIGV.bam
 
 #----------------------------------------------------------------------------------------------------------------------------
 # Sorting resulting bam file for assembly and Extract reads 1 and reads 2 
