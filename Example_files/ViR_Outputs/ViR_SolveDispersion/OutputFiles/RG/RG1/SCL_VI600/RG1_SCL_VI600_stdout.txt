@@ -1,0 +1,204 @@
+
+
+     ______  ____   ____  ____   ____  ______  __ __
+    |      ||    \ |    ||    \ |    ||      ||  |  |
+    |      ||  D  ) |  | |  _  | |  | |      ||  |  |
+    |_|  |_||    /  |  | |  |  | |  | |_|  |_||  ~  |
+      |  |  |    \  |  | |  |  | |  |   |  |  |___, |
+      |  |  |  .  \ |  | |  |  | |  |   |  |  |     |
+      |__|  |__|\_||____||__|__||____|  |__|  |____/
+
+    Trinity-v2.7.0-PRERELEASE
+
+
+
+Left read files: $VAR1 = [
+          '/home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end1.fq'
+        ];
+Right read files: $VAR1 = [
+          '/home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end2.fq'
+        ];
+Trinity version: Trinity-v2.7.0-PRERELEASE
+** NOTE: Latest version of Trinity is v2.11.0, and can be obtained at:
+	https://github.com/trinityrnaseq/trinityrnaseq/releases
+
+Thursday, November 5, 2020: 17:59:37	CMD: java -Xmx64m -XX:ParallelGCThreads=2  -jar /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/ExitTester.jar 0
+Thursday, November 5, 2020: 17:59:37	CMD: java -Xmx4g -XX:ParallelGCThreads=2  -jar /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/ExitTester.jar 1
+Thursday, November 5, 2020: 17:59:37	CMD: mkdir -p /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity
+Thursday, November 5, 2020: 17:59:37	CMD: mkdir -p /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis
+
+
+----------------------------------------------------------------------------------
+-------------- Trinity Phase 1: Clustering of RNA-Seq Reads  ---------------------
+----------------------------------------------------------------------------------
+
+---------------------------------------------------------------
+------------ In silico Read Normalization ---------------------
+-- (Removing Excess Reads Beyond 200 Coverage --
+---------------------------------------------------------------
+
+# running normalization on reads: $VAR1 = [
+          [
+            '/home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end1.fq'
+          ],
+          [
+            '/home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end2.fq'
+          ]
+        ];
+
+
+Thursday, November 5, 2020: 17:59:37	CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/insilico_read_normalization.pl --seqType fq --JM 10G  --max_cov 200 --min_cov 1 --CPU 2 --output /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization   --max_pct_stdev 10000  --left /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end1.fq --right /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end2.fq --pairs_together --PARALLEL_STATS  
+Converting input files. (both directions in parallel)CMD: seqtk-trinity seq -A /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end1.fq >> left.fa
+CMD finished (0 seconds)
+CMD: seqtk-trinity seq -A /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/RG1_SCL_VI600_end2.fq >> right.fa
+CMD finished (0 seconds)
+CMD: touch left.fa.ok
+CMD finished (0 seconds)
+CMD: touch right.fa.ok
+CMD finished (0 seconds)
+Done converting input files.CMD: cat left.fa right.fa > both.fa
+CMD finished (0 seconds)
+CMD: touch both.fa.ok
+-------------------------------------------
+----------- Jellyfish  --------------------
+-- (building a k-mer catalog from reads) --
+-------------------------------------------
+
+CMD finished (0 seconds)
+CMD: jellyfish count -t 2 -m 25 -s 100000000  --canonical  both.fa
+CMD finished (1 seconds)
+CMD: jellyfish histo -t 2 -o jellyfish.K25.min2.kmers.fa.histo mer_counts.jf
+CMD finished (0 seconds)
+CMD: jellyfish dump -L 2 mer_counts.jf > jellyfish.K25.min2.kmers.fa
+CMD finished (0 seconds)
+CMD: touch jellyfish.K25.min2.kmers.fa.success
+CMD finished (0 seconds)
+CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/..//Inchworm/bin/fastaToKmerCoverageStats --reads left.fa --kmers jellyfish.K25.min2.kmers.fa --kmer_size 25  --num_threads 1  --DS  > left.fa.K25.stats
+CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/..//Inchworm/bin/fastaToKmerCoverageStats --reads right.fa --kmers jellyfish.K25.min2.kmers.fa --kmer_size 25  --num_threads 1  --DS  > right.fa.K25.stats
+-reading Kmer occurrences...
+
+ done parsing 1472 Kmers, 1472 added, taking 0 seconds.
+-reading Kmer occurrences...
+
+ done parsing 1472 Kmers, 1472 added, taking 0 seconds.
+STATS_GENERATION_TIME: 0 seconds.
+STATS_GENERATION_TIME: 0 seconds.
+CMD finished (0 seconds)
+CMD finished (0 seconds)
+CMD: touch left.fa.K25.stats.ok
+CMD finished (0 seconds)
+CMD: touch right.fa.K25.stats.ok
+-sorting each stats file by read name.
+CMD finished (0 seconds)
+CMD: /usr/bin/sort --parallel=2 -k5,5 -T . -S 5G left.fa.K25.stats > left.fa.K25.stats.sort
+CMD finished (0 seconds)
+CMD: /usr/bin/sort --parallel=2 -k5,5 -T . -S 5G right.fa.K25.stats > right.fa.K25.stats.sort
+CMD finished (0 seconds)
+CMD: touch left.fa.K25.stats.sort.ok
+CMD finished (0 seconds)
+CMD: touch right.fa.K25.stats.sort.ok
+CMD finished (0 seconds)
+CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/..//util/support_scripts//nbkc_merge_left_right_stats.pl --left left.fa.K25.stats.sort --right right.fa.K25.stats.sort --sorted > pairs.K25.stats
+-opening left.fa.K25.stats.sort
+-opening right.fa.K25.stats.sort
+-done opening files.
+CMD finished (0 seconds)
+CMD: touch pairs.K25.stats.ok
+CMD finished (0 seconds)
+CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/..//util/support_scripts//nbkc_normalize.pl --stats_file pairs.K25.stats --max_cov 200  --min_cov 1 --max_pct_stdev 10000 > pairs.K25.stats.C200.pctSD10000.accs
+49 / 49 = 100.00% reads selected during normalization.
+0 / 49 = 0.00% reads discarded as likely aberrant based on coverage profiles.
+0 / 49 = 0.00% reads missing kmer coverage (N chars included?).
+0 / 49 = 0.00% reads discarded as below minimum coverage threshold=1
+CMD finished (1 seconds)
+CMD: touch pairs.K25.stats.C200.pctSD10000.accs.ok
+CMD finished (0 seconds)
+CMD: touch /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/RG1_SCL_VI600_end1.fq.normalized_K25_maxC200_minC1_pctSD10000.fq.ok
+CMD finished (0 seconds)
+CMD: touch /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/RG1_SCL_VI600_end2.fq.normalized_K25_maxC200_minC1_pctSD10000.fq.ok
+CMD finished (0 seconds)
+CMD: ln -sf /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/RG1_SCL_VI600_end1.fq.normalized_K25_maxC200_minC1_pctSD10000.fq left.norm.fq
+CMD finished (0 seconds)
+CMD: ln -sf /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/RG1_SCL_VI600_end2.fq.normalized_K25_maxC200_minC1_pctSD10000.fq right.norm.fq
+-removing tmp dir /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/tmp_normalized_reads
+CMD finished (0 seconds)
+
+
+Normalization complete. See outputs: 
+	/home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/RG1_SCL_VI600_end1.fq.normalized_K25_maxC200_minC1_pctSD10000.fq
+	/home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/RG1_SCL_VI600_end2.fq.normalized_K25_maxC200_minC1_pctSD10000.fq
+Thursday, November 5, 2020: 17:59:39	CMD: touch /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/normalization.ok
+Converting input files. (in parallel)Thursday, November 5, 2020: 17:59:39	CMD: cat /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/left.norm.fq | seqtk-trinity seq -A - >> left.fa
+Thursday, November 5, 2020: 17:59:39	CMD: touch left.fa.ok
+Thursday, November 5, 2020: 17:59:39	CMD: cat /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/insilico_read_normalization/right.norm.fq | seqtk-trinity seq -A - >> right.fa
+Thursday, November 5, 2020: 17:59:39	CMD: touch right.fa.ok
+Thursday, November 5, 2020: 17:59:39	CMD: touch left.fa.ok right.fa.ok
+Thursday, November 5, 2020: 17:59:39	CMD: cat left.fa right.fa > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa
+Thursday, November 5, 2020: 17:59:39	CMD: touch /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa.ok
+-------------------------------------------
+----------- Jellyfish  --------------------
+-- (building a k-mer catalog from reads) --
+-------------------------------------------
+
+* Running CMD: jellyfish count -t 2 -m 25 -s 100000000  --canonical  /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa
+* Running CMD: jellyfish dump -L 1 mer_counts.jf > jellyfish.kmers.fa
+* Running CMD: jellyfish histo -t 2 -o jellyfish.kmers.fa.histo mer_counts.jf
+----------------------------------------------
+--------------- Inchworm ---------------------
+-- (Linear contig construction from k-mers) --
+----------------------------------------------
+
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/Inchworm/bin//inchworm --kmers jellyfish.kmers.fa --run_inchworm -K 25 -L 25 --monitor 1   --DS  --num_threads 2  --PARALLEL_IWORM  > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa.tmp
+* Running CMD: mv /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa.tmp /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa
+Thursday, November 5, 2020: 17:59:40	CMD: touch /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa.finished
+--------------------------------------------------------
+-------------------- Chrysalis -------------------------
+-- (Contig Clustering & de Bruijn Graph Construction) --
+--------------------------------------------------------
+
+inchworm_target: /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa
+bowite_reads_fa: /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa
+chrysalis_reads_fa: /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/filter_iworm_by_min_length_or_cov.pl /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa 100 10 > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/inchworm.K25.L25.DS.fa.min100
+* Running CMD: /usr/local/bin/bowtie2-build --threads 2 -o 3 /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/inchworm.K25.L25.DS.fa.min100 /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/inchworm.K25.L25.DS.fa.min100 1>/dev/null
+* Running CMD: bash -c " set -o pipefail;/usr/local/bin/bowtie2 --local -k 2 --no-unal --threads 2 -f --score-min G,20,4 -x /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/inchworm.K25.L25.DS.fa.min100 /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa  | samtools view -@ 2 -F4 -Sb - | samtools sort -m 2684354560 -@ 2 -no - - > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm.bowtie.nameSorted.bam" 
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/scaffold_iworm_contigs.pl /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm.bowtie.nameSorted.bam /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_scaffolds.txt
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/Chrysalis/GraphFromFasta -i /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa -r /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa -min_contig_length 200 -min_glue 2 -glue_factor 0.05 -min_iso_ratio 0.05 -t 2 -k 24 -kk 48  -scaffolding /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_scaffolds.txt  > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_cluster_welds_graph.txt
+* Running CMD: /usr/bin/sort --parallel=2 -T . -S 10G  -k9,9gr /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_cluster_welds_graph.txt > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_cluster_welds_graph.txt.sorted
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/annotate_chrysalis_welds_with_iworm_names.pl /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_cluster_welds_graph.txt.sorted > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_cluster_welds_graph.txt.sorted.wIwormNames
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/Chrysalis/BubbleUpClustering -i /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/inchworm.K25.L25.DS.fa  -weld_graph /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/iworm_cluster_welds_graph.txt.sorted -min_contig_length 200  > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/GraphFromIwormFasta.out
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/Chrysalis/CreateIwormFastaBundle -i /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/GraphFromIwormFasta.out -o /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/bundled_iworm_contigs.fasta -min 200
+* Running CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/Chrysalis/ReadsToTranscripts -i /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/both.fa -f /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/bundled_iworm_contigs.fasta -o /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/readsToComponents.out -t 2 -max_mem_reads 50000000 
+* Running CMD: /usr/bin/sort --parallel=2 -T . -S 10G -k 1,1n /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/readsToComponents.out > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/chrysalis/readsToComponents.out.sort
+Thursday, November 5, 2020: 17:59:41	CMD: mkdir -p /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/read_partitions/Fb_0/CBin_0
+Thursday, November 5, 2020: 17:59:41	CMD: touch /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/partitioned_reads.files.list.ok
+Thursday, November 5, 2020: 17:59:41	CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/write_partitioned_trinity_cmds.pl --reads_list_file /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/partitioned_reads.files.list --CPU 1 --max_memory 1G  --run_as_paired  --seqType fa --trinity_complete --full_cleanup  > recursive_trinity.cmds
+Thursday, November 5, 2020: 17:59:41	CMD: touch recursive_trinity.cmds.ok
+Thursday, November 5, 2020: 17:59:41	CMD: touch recursive_trinity.cmds.ok
+
+
+--------------------------------------------------------------------------------
+------------ Trinity Phase 2: Assembling Clusters of Reads ---------------------
+------- (involving the Inchworm, Chrysalis, Butterfly trifecta ) ---------------
+--------------------------------------------------------------------------------
+
+Thursday, November 5, 2020: 17:59:41	CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/trinity-plugins/BIN/ParaFly -c recursive_trinity.cmds -CPU 2 -v -shuffle 
+Number of Commands: 2
+succeeded(1)   50% completed.    succeeded(2)   100% completed.    
+
+All commands completed successfully. :-)
+
+
+
+** Harvesting all assembled transcripts into a single multi-fasta file...
+
+Thursday, November 5, 2020: 17:59:43	CMD: find /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/read_partitions/ -name '*inity.fasta'  | /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/partitioned_trinity_aggregator.pl TRINITY_DN > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/Trinity.fasta.tmp
+Thursday, November 5, 2020: 17:59:43	CMD: mv /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity/Trinity.fasta.tmp /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity.Trinity.fasta
+
+
+#############################################################################
+Finished.  Final Trinity assemblies are written to /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity.Trinity.fasta
+#############################################################################
+
+
+Thursday, November 5, 2020: 17:59:43	CMD: /ngs-data/share_tools/tools/trinityrnaseq-Trinity-v2.7.0-PRERELEASE/util/support_scripts/get_Trinity_gene_to_trans_map.pl /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity.Trinity.fasta > /home/pischedda/ViR_InSilicoData/input_data_susanna/ViR_SD/SSM_Cov_30/SCL_VI600/OutputFiles/RG/RG1/SCL_VI600/trinity.Trinity.fasta.gene_trans_map
