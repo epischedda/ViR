@@ -1,0 +1,1 @@
+/home/ViR/Example_files/Raw_data/SCL_VI600.R1.fastq	/home/ViR/Example_files/Raw_data/SCL_VI600.R2.fastq
