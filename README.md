@@ -1,7 +1,7 @@
 # ViR
 Pipeline developped by Elisa Pischedda, while in the Bonizzoni Lab at the University of Pavia (Italy).
 
-[see the ViR paper in Biorxiv: Pischedda et al., 2020](https://www.biorxiv.org/content/10.1101/2020.06.16.155119v1 "ViR paper")
+[see the ViR paper in BMC Bioinformatics: Pischedda et al., 2021](https://pubmed.ncbi.nlm.nih.gov/33541262/ "ViR paper")
 
 ## Purpose
 ViR is designed to solve the dispersion of reads due to intrasample variability for a reliable identification of lateral gene transfer events, with a focus on viral integrations. Repetitive elements and/or fragmentation of a genome assembly result in intra-host variability leading to dispersion of reads across sequence-identical regions of the genome (here after called 'equivalent regions') when mapping short paired end reads to predict sites of an integration event. ViR solve the dispersions of reads by recognizing the membership of spared chimeric reads across equivalent genomic region and reconstructing the insertion site, based on available reads.

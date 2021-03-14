@@ -188,39 +188,63 @@ else
 	#----------------------------------------------------------------------------------------------------------------------------
 	# Exclude mates that can map in the reference genome inside the window decided by the user
 	#----------------------------------------------------------------------------------------------------------------------------
+	grep '>' $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/All_HostReads.fasta > $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Selected_Reads/List_ReadsFromSam.txt
+	sed -i -e 's/>//g' $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Selected_Reads/List_ReadsFromSam.txt
+
+	touch $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/Mates_inWindow.txt
+
+	while IFS='' read -r line || [[ -n "$line" ]]; do
+		
+		grep $line $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted.bed > $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted_specificReads.bed
+		grep $line $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted.bed > $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted_specificReads.bed
+
+		if [[ -s $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted_specificReads.bed ]];
+			then
+				$PATH_TO_BEDTOOLS closest -d \
+				-a $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted_specificReads.bed \
+				-b $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted_specificReads.bed > $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/ClosestMates_specificReads.txt
+
+				awk -v d="$MATE_DISTANCE" '$13 >= 0 && $13 < d' $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/ClosestMates_specificReads.txt >> $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/Mates_inWindow.txt
+		fi
+
+	done < $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Selected_Reads/List_ReadsFromSam.txt
+
+	if [[ -s $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/ClosestMates_specificReads.txt ]];
+		then
+		rm $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/ClosestMates_specificReads.txt
+	fi
+
+	if [[ -s $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted_specificReads.bed ]];
+		then
+		rm $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted_specificReads.bed
+	fi
+
+	if [[ -s $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted_specificReads.bed ]];
+		then
+		rm $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted_specificReads.bed
+	fi
+	
 	echo -e 'Exclude mates that map inside the window decided by the user...'
-	$PATH_TO_BEDTOOLS closest -d \
-	-a $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted.bed \
-	-b $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted.bed > $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/ClosestMates.txt
-
-	awk -v d="$MATE_DISTANCE" '$13 >= 0 && $13 < d' $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/ClosestMates.txt > $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/Mates_inWindow.txt
-
 	python $WORKDIR/RC_FilterMatesInWindow.py \
 	-i_mates_in_window $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/Mates_inWindow.txt \
+	-i_readsFromSam $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Selected_Reads/List_ReadsFromSam.txt \
 	-o $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest
-
-	cp $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Selected_Reads/ChimericPairs_Info.txt $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads
-	cp $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef.txt $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads
-	cp $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef.txt $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads
-	cp $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted.bed $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads
-	cp $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted.bed $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads
-	cp $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/All_HostReads.fasta $OUTPUTDIR/$SAMPLE_NAME/OutputFiles
-	cp $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/All_ViralReads.fasta $OUTPUTDIR/$SAMPLE_NAME/OutputFiles
-	mv $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/All_HostReads.fasta $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_HostReads.fasta
-	mv $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/All_ViralReads.fasta $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_ViralReads.fasta
 
 	while IFS='' read -r line || [[ -n "$line" ]]; do
 
-		sed -i "/$line/d" $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/ChimericPairs_Info.txt
-		sed -i "/$line/d" $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_ViralReads_ToRef.txt
-		sed -i "/$line/d" $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_HostReads_ToRef.txt
-		sed -i "/$line/d" $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_ViralReads_ToRef_sorted.bed
-		sed -i "/$line/d" $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_HostReads_ToRef_sorted.bed
-		sed -i "/$line/,+1d" $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_HostReads.fasta
-		sed -i "/$line/,+1d" $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_ViralReads.fasta
+		grep -w $line $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Selected_Reads/ChimericPairs_Info.txt >> $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/ChimericPairs_Info.txt
+		grep -w $line $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef.txt >> $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_ViralReads_ToRef.txt
+		grep -w $line $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef.txt >> $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_HostReads_ToRef.txt
+		grep $line $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/blast_ViralReads_ToRef_sorted.bed >> $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_ViralReads_ToRef_sorted.bed
+		grep $line $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/blast_HostReads_ToRef_sorted.bed >> $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Final_Reads/blast_HostReads_ToRef_sorted.bed
+		grep -w $line -A 1 $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_HostReads_refgen/All_HostReads.fasta >> $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_HostReads.fasta
+		grep -w $line -A 1 $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Blastn_ViralReads_refgen/All_ViralReads.fasta >> $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_ViralReads.fasta
 		
 	done < $OUTPUTDIR/$SAMPLE_NAME/IntermediateFiles/Bedtools_closest/List_FinalReads.txt
-	
+
+	sed -i '/--/d' $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_HostReads.fasta
+	sed -i '/--/d' $OUTPUTDIR/$SAMPLE_NAME/OutputFiles/Final_ViralReads.fasta
+
 	#----------------------------------------------------------------------------------------------------------------------------
 	# Generate output file
 	#----------------------------------------------------------------------------------------------------------------------------
